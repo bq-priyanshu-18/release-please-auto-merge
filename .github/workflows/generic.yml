@@ -40,7 +40,8 @@ jobs:
           default-branch: main
 
   release-check:
-   runs-on: ubuntu-latest       
+   runs-on: ubuntu-latest    
+   needs: release-version 
    steps:
     - name: Release Please
       run: |
