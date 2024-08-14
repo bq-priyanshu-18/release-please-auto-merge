@@ -25,9 +25,11 @@ jobs:
           token: ${{ github.token }}
           release-type: node
           default-branch: main
-      - name: Enable Auto-Merge
-        uses: peter-evans/enable-pull-request-automerge@v2
+          
+      - name: Enable Pull Request Automerge
+        if: steps.release.outputs.pull-request-operation == 'created'
+        uses: peter-evans/enable-pull-request-automerge@v3
         with:
           token: ${{ github.token }}
           pull-request-number: ${{ steps.release.outputs.pull-request-number }}
-          
+          merge-method: squash          
