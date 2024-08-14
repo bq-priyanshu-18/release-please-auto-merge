@@ -26,10 +26,23 @@ jobs:
           release-type: node
           default-branch: main
           
-      - name: Enable Pull Request Automerge
+      # - name: Enable Pull Request Automerge
+      #   if: steps.release.outputs.prs_created == 'true'
+      #   uses: peter-evans/enable-pull-request-automerge@v3
+      #   with:
+      #     token: ${{ github.token }}
+      #     pull-request-number: ${{ steps.release.outputs.pull-request-number }}
+      #     merge-method: squash
+
+      - name: Merge Pull Request
         if: steps.release.outputs.prs_created == 'true'
-        uses: peter-evans/enable-pull-request-automerge@v3
-        with:
-          token: ${{ github.token }}
-          pull-request-number: ${{ steps.release.outputs.pull-request-number }}
-          merge-method: squash
+        run: |
+          PR_NUMBER=$(gh pr list --state open --head release-please--branches--main--components--backend --json number --limit 1 | jq '.[] | .number')
+          if [ -n "$PR_NUMBER" ]; then
+            gh pr merge $PR_NUMBER --merge --auto --delete-branch
+            echo "PR #$PR_NUMBER merged and branch deleted."
+          else
+            echo "No PR found to merge."
+          fi
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
