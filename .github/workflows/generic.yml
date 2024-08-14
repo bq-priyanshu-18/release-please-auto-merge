@@ -38,3 +38,10 @@ jobs:
           # release-type: ${{ inputs.release_type }}
           release-type: node
           default-branch: main
+
+  release-check:
+   runs-on: ubuntu-latest       
+   steps:
+    - name: Release Please
+      run: |
+       echo "rlease cjec ::::  ${{ steps.release.outputs.prs_created }}"
