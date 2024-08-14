@@ -27,10 +27,9 @@ jobs:
           default-branch: main
           
       - name: Enable Pull Request Automerge
-        if: steps.release.outputs.pull-request-operation == 'created'
+        if: steps.release.outputs.prs_created == 'true'
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
           token: ${{ github.token }}
           pull-request-number: ${{ steps.release.outputs.pull-request-number }}
           merge-method: squash
-        
