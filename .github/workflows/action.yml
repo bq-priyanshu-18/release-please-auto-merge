@@ -1,7 +1,4 @@
----
 name: Trunkbased - Main Branch
-# on:
-#   workflow_call:
 on:
   push:
     branches:
@@ -19,25 +16,20 @@ jobs:
   release-version:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
       - uses: google-github-actions/release-please-action@a37ac6e4f6449ce8b3f7607e4d97d0146028dc0b # v4
         id: release
         with:
           token: ${{ github.token }}
           release-type: node
           default-branch: main
-          
-      # - name: Enable Pull Request Automerge
-      #   if: steps.release.outputs.prs_created == 'true'
-      #   uses: peter-evans/enable-pull-request-automerge@v3
-      #   with:
-      #     token: ${{ github.token }}
-      #     pull-request-number: ${{ steps.release.outputs.pull-request-number }}
-      #     merge-method: squash
 
       - name: Merge Pull Request
         if: steps.release.outputs.prs_created == 'true'
         run: |
-          PR_NUMBER=$(gh pr list --state open --head main --json number --limit 1 | jq '.[] | .number')
+          PR_NUMBER=$(gh pr list --state open --head release-please--branches--main--components--backend --json number --limit 1 | jq '.[] | .number')
           if [ -n "$PR_NUMBER" ]; then
             gh pr merge $PR_NUMBER --merge --auto --delete-branch
             echo "PR #$PR_NUMBER merged and branch deleted."
