@@ -32,4 +32,5 @@ jobs:
         with:
           token: ${{ github.token }}
           pull-request-number: ${{ steps.release.outputs.pull-request-number }}
-          merge-method: squash          
+          merge-method: squash
+        
