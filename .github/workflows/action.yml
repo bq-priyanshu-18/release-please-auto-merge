@@ -8,10 +8,12 @@ on:
       - main
 
 permissions:
-  id-token: write # This is required for requesting the JWT
-  contents: write # This is required for actions/checkout
-  packages: write
+  id-token: write
+  contents: write
+  security-events: write
+  actions: write
   pull-requests: write
+  packages: write
 
 jobs:
   release-version:
@@ -20,6 +22,6 @@ jobs:
       - uses: google-github-actions/release-please-action@a37ac6e4f6449ce8b3f7607e4d97d0146028dc0b # v4
         id: release
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ github.token }}
           release-type: node
           default-branch: main
