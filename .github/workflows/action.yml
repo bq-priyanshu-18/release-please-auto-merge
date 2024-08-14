@@ -37,7 +37,7 @@ jobs:
       - name: Merge Pull Request
         if: steps.release.outputs.prs_created == 'true'
         run: |
-          PR_NUMBER=$(gh pr list --state open --head release-please--branches--main--components--backend --json number --limit 1 | jq '.[] | .number')
+          PR_NUMBER=$(gh pr list --state open --head main --json number --limit 1 | jq '.[] | .number')
           if [ -n "$PR_NUMBER" ]; then
             gh pr merge $PR_NUMBER --merge --auto --delete-branch
             echo "PR #$PR_NUMBER merged and branch deleted."
