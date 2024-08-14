@@ -42,7 +42,8 @@ jobs:
   release-check:
    runs-on: ubuntu-latest    
    needs: release-version 
+   if: steps.release.outputs.prs_created == 'true'
    steps:
     - name: Release Please
       run: |
-       echo "rlease cjec ::::  ${{ steps.release.outputs.prs_created }}"
+       echo "rlease cjec ::::"
