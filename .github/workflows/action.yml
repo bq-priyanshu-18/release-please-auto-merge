@@ -2,7 +2,7 @@ name: Trunkbased - Main Branch
 on:
   push:
     branches:
-      - main
+      - mains
 
 permissions:
   id-token: write
@@ -38,4 +38,3 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ github.token }}
-

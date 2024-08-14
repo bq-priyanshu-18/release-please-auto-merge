@@ -1,0 +1,35 @@
+name: Trunkbased - Main Branch
+
+on:
+  workflow_call:
+    inputs:
+      release_type:
+        type: string
+        description: 'The release type for release-please.'
+        required: true
+        default: 'node'
+
+permissions:
+  id-token: write
+  contents: write
+  security-events: write
+  actions: write
+  pull-requests: write
+  packages: write
+
+jobs:
+  release-version:
+    runs-on: ubuntu-latest
+    outputs:
+      release_prs_created: ${{ steps.release.outputs.prs_created }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Release Please
+        uses: google-github-actions/release-please-action@a37ac6e4f6449ce8b3f7607e4d97d0146028dc0b # v4
+        id: release
+        with:
+          token: ${{ github.token }}
+          release-type: ${{ inputs.release_type }}
+          default-branch: main
