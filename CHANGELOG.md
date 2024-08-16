@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.0](https://github.com/bq-priyanshu-18/release-please-auto-merge/compare/v1.6.0...v1.7.0) (2024-08-16)
+
+
+### Features
+
+* automate merge release ([cb9dd41](https://github.com/bq-priyanshu-18/release-please-auto-merge/commit/cb9dd41c31b51d40a6112e425cf6b7c77ebc67eb))
+* automate merge release ([28ca2fc](https://github.com/bq-priyanshu-18/release-please-auto-merge/commit/28ca2fc567b84ce76f15a1164a8194573390d152))
+
 ## [1.6.0](https://github.com/bq-priyanshu-18/release-please-auto-merge/compare/v1.5.0...v1.6.0) (2024-08-16)
 
 
