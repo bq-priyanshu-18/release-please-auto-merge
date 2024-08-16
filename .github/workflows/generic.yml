@@ -44,14 +44,28 @@ jobs:
          release-type: node
          default-branch: main
 
-     - name: release outputs
-       run: |
-        # echo "release releases_created :: ${{ steps.release.outputs.prs_created }}"
-        # echo "release paths_released  :: ${{ steps.release.outputs.paths_released }}"
-        # echo "release prs_created  :: ${{ steps.release.outputs.prs_created }}"
-        # echo "release PR  :: ${{ steps.release.outputs.pr }}"
-        echo "release PRS  :: ${{ steps.release.outputs.prs }}"
+     # - name: release outputs
+     #   run: |
+     #    # echo "release releases_created :: ${{ steps.release.outputs.prs_created }}"
+     #    # echo "release paths_released  :: ${{ steps.release.outputs.paths_released }}"
+     #    # echo "release prs_created  :: ${{ steps.release.outputs.prs_created }}"
+     #    # echo "release PR  :: ${{ steps.release.outputs.pr }}"
+     #    echo "release PRS  :: ${{ steps.release.outputs.prs }}"
 
+     - name: Merge Pull Request
+       if: steps.release.outputs.prs_created == 'true'
+       run: |
+         PR_NUMBER=$(gh pr list --state open --head ${{ steps.release.outputs.prs }} --json number --limit 1 | jq '.[] | .number')
+         if [ -n "$PR_NUMBER" ]; then
+           gh pr merge $PR_NUMBER --merge --auto --delete-branch
+           echo "PR #$PR_NUMBER merged and branch deleted."
+         else
+           echo "No PR found to merge."
+         fi
+       env:
+         GITHUB_TOKEN: ${{ github.token }}
+
+        
   # release-check:
   #  runs-on: ubuntu-latest    
   #  needs: release-version 
