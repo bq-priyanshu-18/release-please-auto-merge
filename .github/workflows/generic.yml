@@ -1,18 +1,23 @@
 name: Trunkbased - Main Branch
 
 on:
- workflow_call:
-   inputs:
-     release_type:
-       type: string
-       description: 'The release type for release-please.'
-       required: true
-       default: 'node'
+ push:
+   branches:
+     - main
 
-   outputs:
-    release_prs_created:
-      description: "The first output string"
-      value: ${{ jobs.release-version.outputs.release_prs_created }}
+# on:
+#  workflow_call:
+#    inputs:
+#      release_type:
+#        type: string
+#        description: 'The release type for release-please.'
+#        required: true
+#        default: 'node'
+
+#    outputs:
+#     release_prs_created:
+#       description: "The first output string"
+#       value: ${{ jobs.release-version.outputs.release_prs_created }}
 
 permissions:
   id-token: write
@@ -38,6 +43,14 @@ jobs:
          token: ${{ github.token }}
          release-type: node
          default-branch: main
+
+     - name: release outputs
+       run: |
+        echo "release releases_created :: ${{ steps.release.outputs.prs_created }}"
+        echo "release paths_released  :: ${{ steps.release.outputs.paths_released }}"
+        echo "release prs_created  :: ${{ steps.release.outputs.prs_created }}"
+        echo "release PR  :: ${{ steps.release.outputs.pr }}"
+        echo "release PRS  :: ${{ steps.release.outputs.prs }}"
 
   # release-check:
   #  runs-on: ubuntu-latest    
