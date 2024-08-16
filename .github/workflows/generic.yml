@@ -54,7 +54,7 @@ jobs:
        run: |
          HEAD_BRANCH_NAME=$(echo '${{ steps.release.outputs.prs }}' | jq -r '.[0].headBranchName')
          echo "HEAD_BRANCH_NAME=$HEAD_BRANCH_NAME" >> $GITHUB_ENV
-         echo "steps name :: ${{ steps.release.outputs.prs }}"
+         echo "steps name :: $HEAD_BRANCH_NAME"
   #    - name: Merge Pull Request
   #      if: steps.release.outputs.prs_created == 'true'
   #      run: |
