@@ -1,27 +1,27 @@
 name: Trunkbased - Main Branch
 
-# on:
-#  push:
-#    branches:
-#      - main
-
 on:
- workflow_call:
-   inputs:
-     release_type:
-       type: string
-       description: 'The release type for release-please.'
-       required: true
-       default: 'node'
+ push:
+   branches:
+     - main
 
-   outputs:
-    release_prs_created:
-      description: "The first output string"
-      value: ${{ jobs.release-version.outputs.release_prs_created }}
+# on:
+#  workflow_call:
+#    inputs:
+#      release_type:
+#        type: string
+#        description: 'The release type for release-please.'
+#        required: true
+#        default: 'node'
 
-    release_prs:
-      description: "The first output string"
-      value: ${{ jobs.release-version.outputs.release_prs }}
+#    outputs:
+#     release_prs_created:
+#       description: "The first output string"
+#       value: ${{ jobs.release-version.outputs.release_prs_created }}
+
+#     release_prs:
+#       description: "The first output string"
+#       value: ${{ jobs.release-version.outputs.release_prs }}
 
 permissions:
   id-token: write
@@ -55,18 +55,19 @@ jobs:
          HEAD_BRANCH_NAME=$(echo '${{ steps.release.outputs.prs }}' | jq -r '.[0].headBranchName')
          echo "HEAD_BRANCH_NAME=$HEAD_BRANCH_NAME" >> $GITHUB_ENV
          echo "steps name :: $HEAD_BRANCH_NAME"
-  #    - name: Merge Pull Request
-  #      if: steps.release.outputs.prs_created == 'true'
-  #      run: |
-  #        PR_NUMBER=$(gh pr list --state open --head ${{ steps.release.outputs.prs }} --json number --limit 1 | jq '.[] | .number')
-  #        if [ -n "$PR_NUMBER" ]; then
-  #          gh pr merge $PR_NUMBER --merge --auto --delete-branch
-  #          echo "PR #$PR_NUMBER merged and branch deleted."
-  #        else
-  #          echo "No PR found to merge."
-  #        fi
-  #      env:
-  #        GITHUB_TOKEN: ${{ github.token }}
+
+     - name: Merge Pull Request
+       if: steps.release.outputs.prs_created == 'true'
+       run: |
+         PR_NUMBER=$(gh pr list --state open --head ${{ steps.release.outputs.prs }} --json number --limit 1 | jq '.[] | .number')
+         if [ -n "$PR_NUMBER" ]; then
+           gh pr merge $PR_NUMBER --merge --auto --delete-branch
+           echo "PR #$PR_NUMBER merged and branch deleted."
+         else
+           echo "No PR found to merge."
+         fi
+       env:
+         GITHUB_TOKEN: ${{ github.token }}
 
         
   # # release-check:
