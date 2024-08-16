@@ -46,10 +46,10 @@ jobs:
 
      - name: release outputs
        run: |
-        echo "release releases_created :: ${{ steps.release.outputs.prs_created }}"
-        echo "release paths_released  :: ${{ steps.release.outputs.paths_released }}"
-        echo "release prs_created  :: ${{ steps.release.outputs.prs_created }}"
-        echo "release PR  :: ${{ steps.release.outputs.pr }}"
+        # echo "release releases_created :: ${{ steps.release.outputs.prs_created }}"
+        # echo "release paths_released  :: ${{ steps.release.outputs.paths_released }}"
+        # echo "release prs_created  :: ${{ steps.release.outputs.prs_created }}"
+        # echo "release PR  :: ${{ steps.release.outputs.pr }}"
         echo "release PRS  :: ${{ steps.release.outputs.prs }}"
 
   # release-check:
