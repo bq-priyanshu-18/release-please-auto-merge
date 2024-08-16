@@ -9,6 +9,11 @@ on:
        required: true
        default: 'node'
 
+   outputs:
+    release_prs_created:
+      description: "The first output string"
+      value: ${{ jobs.release-version.outputs.release_prs_created }}
+
 permissions:
   id-token: write
   contents: write
