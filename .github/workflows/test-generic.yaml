@@ -65,10 +65,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
+      - name: Checkout Main Branch
+        run: |
+          git fetch origin main
+          git checkout main
+          git pull origin main
+
       - name: Get Updated Version from package.json
         run: |
-          # Wait for a moment to ensure the package.json is updated if needed
-          sleep 5
           CURRENT_VERSION=$(jq -r .version package.json)
           echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_ENV
           echo "Current version is $CURRENT_VERSION"
@@ -76,7 +80,7 @@ jobs:
       - name: Create Release
         if: env.PR_NUMBER != ''
         run: |
-          gh release create "v${{ env.CURRENT_VERSION }}" --title "Release for PR #$PR_NUMBER" --notes "Release created from PR #$PR_NUMBER"
-          echo "Release created for PR #$PR_NUMBER with version v${{ env.CURRENT_VERSION }}."
+          gh release create "${{ env.CURRENT_VERSION }}" --title "Release for PR #$PR_NUMBER" --notes "Release created from PR #$PR_NUMBER"
+          echo "Release created for PR #$PR_NUMBER with version ${{ env.CURRENT_VERSION }}."
         env:
           GITHUB_TOKEN: ${{ github.token }}
