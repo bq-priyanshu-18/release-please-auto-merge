@@ -1,9 +1,9 @@
 name: Trunkbased - Main Branch
 
 on:
- push:
-   branches:
-     - main
+  push:
+    branches:
+      - main
 
 permissions:
   id-token: write
@@ -15,11 +15,11 @@ permissions:
 
 jobs:
   release-version:
-   runs-on: ubuntu-latest
-   outputs:
-     release_prs_created: ${{ steps.release.outputs.prs_created }}
-     release_prs: ${{ steps.release.outputs.prs }} 
-   steps:
+    runs-on: ubuntu-latest
+    outputs:
+      release_prs_created: ${{ steps.release.outputs.prs_created }}
+      release_prs: ${{ steps.release.outputs.prs }}
+    steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
@@ -50,7 +50,7 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        
+
       - name: Change Label to autorelease:tagged
         if: steps.release.outputs.prs_created == 'true'
         run: |
@@ -64,9 +64,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
-      - name: Create Release and Tag
+      - name: Create Tag and Release
         if: steps.release.outputs.prs_created == 'true'
         run: |
-          gh release create "$(git describe --tags --abbrev=0)" --notes "Release created after merging PR #$PR_NUMBER."
+          TAG_NAME="v$(date +'%Y%m%d%H%M%S')"
+          git tag $TAG_NAME
+          git push origin $TAG_NAME
+          gh release create $TAG_NAME --notes "Release created after merging PR #$PR_NUMBER."
         env:
           GITHUB_TOKEN: ${{ github.token }}
