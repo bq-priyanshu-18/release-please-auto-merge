@@ -72,20 +72,10 @@ jobs:
           echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_ENV
           echo "Current version is $CURRENT_VERSION"
 
-      - name: Calculate Next Version
-        id: calculate_version
-        run: |
-          IFS='.' read -r major minor patch <<< "$CURRENT_VERSION"
-          # Increment the patch version; adjust this logic based on your versioning strategy
-          NEXT_PATCH=$((patch + 1))
-          NEXT_VERSION="$major.$minor.$NEXT_PATCH"
-          echo "NEXT_VERSION=$NEXT_VERSION" >> $GITHUB_ENV
-          echo "Next version will be $NEXT_VERSION"
-
       - name: Create Release
         if: env.PR_NUMBER != ''
         run: |
-          gh release create "${{ env.NEXT_VERSION }}" --title "Release for PR #$PR_NUMBER" --notes "Release created from PR #$PR_NUMBER"
-          echo "Release created for PR #$PR_NUMBER with version ${{ env.NEXT_VERSION }}."
+          gh release create "${{ env.CURRENT_VERSION }}" --title "Release for PR #$PR_NUMBER" --notes "Release created from PR #$PR_NUMBER"
+          echo "Release created for PR #$PR_NUMBER with version ${{ env.CURRENT_VERSION }}."
         env:
           GITHUB_TOKEN: ${{ github.token }}
