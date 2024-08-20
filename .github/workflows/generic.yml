@@ -3,7 +3,7 @@ name: Trunkbased - Main Branch
 on:
  push:
    branches:
-     - main
+     - mains
 
 # on:
 #  workflow_call:
