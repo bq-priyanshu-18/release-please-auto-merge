@@ -52,11 +52,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
-      - name: Update PR Label
-        if: env.PR_NUMBER != ''
+      - name: Change Label to autorelease:tagged
+        if: steps.release.outputs.prs_created == 'true'
         run: |
-          gh pr edit $PR_NUMBER --add-label autorelease:tagged
-          echo "Label 'autorelease:tagged' added to PR #$PR_NUMBER."
+          PR_NUMBER=$(gh pr list --state closed --head $HEAD_BRANCH_NAME --json number --limit 1 | jq '.[] | .number')
+          if [ -n "$PR_NUMBER" ]; then
+            gh pr edit $PR_NUMBER --remove-label "autorelease: pending" --add-label "autorelease: tagged"
+            echo "PR #$PR_NUMBER label changed to autorelease: tagged."
+          else
+            echo "No PR found to update label."
+          fi
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
