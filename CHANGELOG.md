@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/bq-priyanshu-18/release-please-auto-merge/compare/v1.10.0...v1.11.0) (2024-08-20)
+
+
+### Features
+
+* automate merge release ([0b7c693](https://github.com/bq-priyanshu-18/release-please-auto-merge/commit/0b7c693458041d4821f5cb141556b9f69b7d1878))
+
 ## [1.10.0](https://github.com/bq-priyanshu-18/release-please-auto-merge/compare/v1.9.0...v1.10.0) (2024-08-16)
 
 
